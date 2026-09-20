@@ -25,10 +25,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   onContinueAsGuest,
 }) => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState(currentUser?.email || 'rajababu57268@gmail.com');
-  const [name, setName] = useState(currentUser?.name || 'Raja Babu');
+  const [email, setEmail] = useState(currentUser?.email || '');
+  const [name, setName] = useState(currentUser?.name || '');
   const [role, setRole] = useState<UserRole>(currentUser?.role || 'Senior Tax Manager');
-  const [password, setPassword] = useState('Elite@1204');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -169,7 +169,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Raja Babu"
+                  placeholder="Enter your name"
                   className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500"
                 />
               </div>
@@ -191,19 +191,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
           </div>
 
-          <div>
-            <label className="font-semibold text-slate-700 block mb-1">Access Role / Permission Tier</label>
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value as UserRole)}
-              className="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold focus:outline-none cursor-pointer"
-            >
-              <option value="Super Admin">Super Admin (Full System & Security)</option>
-              <option value="Senior Tax Manager">Senior Tax Manager (Approval & GSTR Filing)</option>
-              <option value="Tax Auditor / Reviewer">Tax Auditor / Reviewer (Audit & Variance Review)</option>
-              <option value="Accountant">Accountant / Data Entry (Upload & Mapping)</option>
-            </select>
-          </div>
+          {(isSignUp || currentUser) && (
+            <div>
+              <label className="font-semibold text-slate-700 block mb-1">Access Role / Permission Tier</label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value as UserRole)}
+                className="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-semibold focus:outline-none cursor-pointer"
+              >
+                <option value="Super Admin">Super Admin (Full System & Security)</option>
+                <option value="Senior Tax Manager">Senior Tax Manager (Approval & GSTR Filing)</option>
+                <option value="Tax Auditor / Reviewer">Tax Auditor / Reviewer (Audit & Variance Review)</option>
+                <option value="Accountant">Accountant / Data Entry (Upload & Mapping)</option>
+              </select>
+            </div>
+          )}
 
           <div>
             <label className="font-semibold text-slate-700 block mb-1">Password</label>
@@ -216,10 +218,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 placeholder="••••••••••••"
                 className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500"
               />
-            </div>
-            <div className="flex items-center justify-between text-[10px] text-slate-500 mt-1">
-              <span>Account: <strong className="text-slate-700">rajababu57268@gmail.com</strong></span>
-              <span>Password: <strong className="text-blue-600 font-mono">Elite@1204</strong></span>
             </div>
           </div>
 
