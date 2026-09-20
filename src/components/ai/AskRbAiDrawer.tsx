@@ -58,6 +58,7 @@ export const AskRbAiDrawer: React.FC<AskRbAiDrawerProps> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: prompt, enableThinking }),
       });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setSearchResult(data);
       if (onApplyQueryFilter && data.suggestedFilters) {
@@ -84,6 +85,7 @@ export const AskRbAiDrawer: React.FC<AskRbAiDrawerProps> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question }),
       });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setKnowledgeAnswer(data);
     } catch (err) {
@@ -115,6 +117,7 @@ export const AskRbAiDrawer: React.FC<AskRbAiDrawerProps> = ({
           ],
         }),
       });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setCleanResult(data.suggestions);
     } catch (err) {

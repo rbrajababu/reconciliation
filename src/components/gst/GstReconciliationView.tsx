@@ -97,6 +97,7 @@ export const GstReconciliationView: React.FC<GstReconciliationViewProps> = ({
           enableThinking: enableDeepThinking,
         }),
       });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setAiExplanation(data);
     } catch (err) {

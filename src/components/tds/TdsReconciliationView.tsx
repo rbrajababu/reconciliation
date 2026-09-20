@@ -77,6 +77,7 @@ export const TdsReconciliationView: React.FC<TdsReconciliationViewProps> = ({
           record: rec,
         }),
       });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setAiExplanation(data);
     } catch (err) {
