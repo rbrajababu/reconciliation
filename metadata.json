@@ -1,0 +1,6 @@
+{
+  "name": "Reconciliation With RB",
+  "description": "Smart Reconciliation. Accurate Compliance. Better Control. AI-powered GST 2A/2B and TDS 24Q/26Q reconciliation, tax-data analysis, exception identification, and compliance reporting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

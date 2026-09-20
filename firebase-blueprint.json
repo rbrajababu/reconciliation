@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "Organization": {
+      "title": "Organization",
+      "description": "Company or business entity with tax profiles",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Display company name" },
+        "legalName": { "type": "string", "description": "Legal registered entity name" },
+        "pan": { "type": "string", "description": "Income Tax PAN 10 alphanumeric digits" },
+        "tan": { "type": "string", "description": "TDS Tax Deduction Account Number" },
+        "defaultGstin": { "type": "string", "description": "Primary GSTIN" },
+        "state": { "type": "string", "description": "State of registration" },
+        "createdBy": { "type": "string", "description": "UID of owner/admin" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" }
+      },
+      "required": ["name", "pan", "createdBy"]
+    },
+    "ReconciliationRun": {
+      "title": "ReconciliationRun",
+      "description": "A specific reconciliation execution for GST or TDS period",
+      "type": "object",
+      "properties": {
+        "orgId": { "type": "string", "description": "Associated organization ID" },
+        "type": { "type": "string", "enum": ["GST_INWARD", "GST_OUTWARD", "TDS"], "description": "Reconciliation category" },
+        "period": { "type": "string", "description": "Period e.g. April 2026 or Q1 2026-27" },
+        "financialYear": { "type": "string", "description": "Financial Year e.g. 2026-27" },
+        "status": { "type": "string", "enum": ["Draft", "Processing", "Completed", "Reviewed", "Finalized"] },
+        "totalRecords": { "type": "number" },
+        "matchedCount": { "type": "number" },
+        "unmatchedCount": { "type": "number" },
+        "partialCount": { "type": "number" },
+        "taxDifference": { "type": "number" },
+        "itcAtRisk": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["orgId", "type", "period", "status"]
+    },
+    "GstRecord": {
+      "title": "GstRecord",
+      "description": "Reconciled invoice item for GST",
+      "type": "object",
+      "properties": {
+        "orgId": { "type": "string" },
+        "runId": { "type": "string" },
+        "invoiceNumber": { "type": "string" },
+        "invoiceDate": { "type": "string" },
+        "supplierGstin": { "type": "string" },
+        "supplierName": { "type": "string" },
+        "booksTaxable": { "type": "number" },
+        "portalTaxable": { "type": "number" },
+        "taxDifference": { "type": "number" },
+        "matchStatus": { "type": "string", "enum": ["Exact Match", "Probable Match", "Partial Match", "Missing in 2B", "Missing in Books", "Duplicate"] },
+        "exceptionType": { "type": "string" },
+        "itcStatus": { "type": "string" },
+        "resolutionStatus": { "type": "string", "enum": ["New", "Under Review", "Clarification Required", "Resolved", "Ignored"] },
+        "remarks": { "type": "string" }
+      },
+      "required": ["orgId", "invoiceNumber", "matchStatus"]
+    },
+    "TdsRecord": {
+      "title": "TdsRecord",
+      "description": "Reconciled deduction or challan item for TDS",
+      "type": "object",
+      "properties": {
+        "orgId": { "type": "string" },
+        "runId": { "type": "string" },
+        "deducteeName": { "type": "string" },
+        "pan": { "type": "string" },
+        "section": { "type": "string" },
+        "paymentDate": { "type": "string" },
+        "paymentAmount": { "type": "number" },
+        "booksTds": { "type": "number" },
+        "reportedTds": { "type": "number" },
+        "difference": { "type": "number" },
+        "matchStatus": { "type": "string" },
+        "exceptionType": { "type": "string" },
+        "resolutionStatus": { "type": "string" }
+      },
+      "required": ["orgId", "deducteeName", "pan", "matchStatus"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Tamper-evident system activity log",
+      "type": "object",
+      "properties": {
+        "orgId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["orgId", "action", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/organizations/{orgId}": {
+      "schema": "Organization",
+      "description": "Organization entities"
+    },
+    "/organizations/{orgId}/runs/{runId}": {
+      "schema": "ReconciliationRun",
+      "description": "Reconciliation runs within an organization"
+    },
+    "/organizations/{orgId}/gstRecords/{recordId}": {
+      "schema": "GstRecord",
+      "description": "GST reconciliation records"
+    },
+    "/organizations/{orgId}/tdsRecords/{recordId}": {
+      "schema": "TdsRecord",
+      "description": "TDS reconciliation records"
+    },
+    "/organizations/{orgId}/auditLogs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Audit trail log entries"
+    }
+  }
+}
